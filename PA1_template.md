@@ -5,22 +5,21 @@ output:
     keep_md: yes
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 
 ## Loading and Preprocessing the Data
 
-```{r load, echo = TRUE}
-data1 <- read.csv("C:/Victoria/Python files/Johns Hopkins Data Science Specialization/Reproducible Research Course Project 1/activity.csv")
 
+```r
+data1 <- read.csv("C:/Victoria/Python files/Johns Hopkins Data Science Specialization/Reproducible Research Course Project 1/activity.csv")
 ```
 
 ## What is the mean total number of steps taken per day?
 
 Shows the 1) the total steps taken per day (stepseachday), 2) a histogram of the steps taken each day, and 3) the mean and median of the steps taken per day
 
-```{r meansteps}
+
+```r
 not_na_data <- data1[!is.na(data1$steps),]
 totalsteps <- sum(not_na_data$steps)
 
@@ -34,20 +33,57 @@ for (i in 1:53) {
 }
 
 stepseachday
+```
+
+```
+##      sumsteps sumsteps sumsteps sumsteps sumsteps sumsteps sumsteps
+## [1,]      126    11352    12116    13294    15420    11015    12811
+##      sumsteps sumsteps sumsteps sumsteps sumsteps sumsteps sumsteps
+## [1,]     9900    10304    17382    12426    15098    10139    15084
+##      sumsteps sumsteps sumsteps sumsteps sumsteps sumsteps sumsteps
+## [1,]    13452    10056    11829    10395     8821    13460     8918
+##      sumsteps sumsteps sumsteps sumsteps sumsteps sumsteps sumsteps
+## [1,]     8355     2492     6778    10119    11458     5018     9819
+##      sumsteps sumsteps sumsteps sumsteps sumsteps sumsteps sumsteps
+## [1,]    15414    10600    10571    10439     8334    12883     3219
+##      sumsteps sumsteps sumsteps sumsteps sumsteps sumsteps sumsteps
+## [1,]    12608    10765     7336       41     5441    14339    15110
+##      sumsteps sumsteps sumsteps sumsteps sumsteps sumsteps sumsteps
+## [1,]     8841     4472    12787    20427    21194    14478    11834
+##      sumsteps sumsteps sumsteps sumsteps
+## [1,]    11162    13646    10183     7047
+```
+
+```r
 hist(stepseachday)
+```
+
+![](PA1_template_files/figure-html/meansteps-1.png)<!-- -->
+
+```r
 meansteps <- mean(stepseachday)
 meansteps
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 mediansteps <- median(stepseachday)
 mediansteps
+```
 
+```
+## [1] 10765
 ```
 
 ## What is the average daily activity pattern?
 
 Shows 1) a time-series plot of the average number of steps taken during each 5-minute interval of a day and 2) the interval that contains the maximum average number of steps
 
-```{r dailypattern, echo = TRUE}
 
+```r
 intervalsum <- not_na_data[1:288,]$steps
 for (i in 2:53) {
     for (j in 1:288) {
@@ -56,6 +92,11 @@ for (i in 2:53) {
 }
 intervalavg <- intervalsum/53
 plot(1:288, intervalavg, type = 'l', main = "Time Series plot of Avg Steps Taken per 5-min Interval in a Day")
+```
+
+![](PA1_template_files/figure-html/dailypattern-1.png)<!-- -->
+
+```r
 maximumsteps <- max(intervalavg)
 
 intervalmax <- 0
@@ -66,7 +107,10 @@ for (i in 1:15264) {
     }
 }
 intervalmax
+```
 
+```
+## [1] 104
 ```
 
 ## Imputing Missing Values
@@ -76,10 +120,17 @@ intervalmax
 3) Fills in the values
 4) Makes a histogram of the new data set and gives its mean and median
 
-```{r imputing, echo = TRUE}
+
+```r
 missingvals <- dim(data1[is.na(data1$steps),])[1]
 missingvals
+```
 
+```
+## [1] 2304
+```
+
+```r
 data2 <- data1
 for (i in 1:17568) {
     if (is.na(data1[i,]$steps)) {
@@ -97,12 +148,26 @@ for (i in 1:61) {
 }
 
 hist(stepseachday2)
+```
+
+![](PA1_template_files/figure-html/imputing-1.png)<!-- -->
+
+```r
 meansteps2 <- mean(stepseachday2)
 meansteps2
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 mediansteps2 <- median(stepseachday2)
 mediansteps2
+```
 
-
+```
+## [1] 10766.19
 ```
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -110,7 +175,8 @@ mediansteps2
 1) Adds in a variable that determines whether the day is a weekday or weekend
 2) Creates two time-series plots that shows the average number per steps per 5-min interval for the weekday and the weekend
 
-```{r differences}
+
+```r
 numweekdays288 <- 0
 numweekends288 <- 0
 
@@ -148,4 +214,6 @@ par(mfrow = c(2,1), mar = c(2,4,2,4))
 plot(1:288, weekdayintavg, type = 'l', main = "Time Series plot of Avg Steps Taken per 5-min Interval in a Weekday")
 plot(1:288, weekendintavg, type = 'l', main = "Time Series plot of Avg Steps Taken per 5-min Interval in a Weekend")
 ```
+
+![](PA1_template_files/figure-html/differences-1.png)<!-- -->
 
